@@ -1,0 +1,29 @@
+<% include partials/header %>
+
+<div class="container">
+<header class="jumbotron">
+  <h1>People you may know</h1>
+</header>
+<div class="row text-center">
+    <% f.forEach(function(f){ %>
+      <div>
+        <div class="col-md-3 col-sm-6">
+          <div class="thumbnail">
+          <img src=" <%= f.profile_pic %> ">
+          <div>
+            <h5> <%= f.user_name %> </h5>
+          </div>
+            <div>
+            <form id="follow" class="ui form" action="/person/<%=id%>/<%=f.user_id%>" method="POST">
+          <button class="ui red basic button" >Follow</button>
+         </form>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+<% }); %>
+</div>
+
+</div>
+<% include partials/footer %>

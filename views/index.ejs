@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    </head>
+    <body id="landing">
+    
+    
+    <div id="landing-header">
+    <h1>Welcome to PhotoHolic!</h1>
+
+		<h3>Be a part of <%=results[0].count%> users.  </h3>
+
+                        <a href="/login" class="btn btn-lg btn-success">Login</a>
+                        <a href="/register" class="btn btn-lg btn-danger">Sign Up</a>
+
+ 		
+    </div>
+    
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+<% include partials/footer %>

@@ -1,0 +1,31 @@
+
+<% include partials/footer %>
+<% include partials/header%>
+<h1><%=u.user_name%></h1>
+<a href="/person/<%=u.user_id%>/newpersonpost">Add new post</a>
+	<img style="width: 30%; height=30%" src="<%= u.profile_pic%>">
+
+        <div class="ui main text container segment">
+        <div class="ui top attached ">
+                <div class="ui divided items">
+                    <% p.forEach(function(p){%>
+                    <div class="item">
+                         <div class="image ui medium rounded" style="margin-bottom: 25px width:200px height: 200px" ><img src="<%= p.image_url%>">
+                         </div>
+                    </div>
+                    <div class="content" style="margin-bottom: 25px">
+                     <div class="meta">
+                  <span> <%= p.created_at.toDateString() %> </span>
+            
+       	 </div>
+                    </div> 
+           <div class="description" style="margin-bottom: 25px">
+            <%=p.caption%> 
+        </div>    
+        <%});%>
+                
+            </div>
+        </div>
+        
+        </div>
+        <% include partials/footer%>

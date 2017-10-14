@@ -1,0 +1,74 @@
+#landing {
+  background-color: #000;
+}
+#landing-header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding: 250px;
+}
+#landing-header h1,h3 {
+  color: black;
+}
+.slideshow { 
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.slideshow li { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite; 
+}
+.slideshow li:nth-child(1) { 
+  background-image: url(http://cdn.mos.cms.futurecdn.net/gvQ9NhQP8wbbM32jXy4V3j.jpg) 
+}
+.slideshow li:nth-child(2) { 
+  background-image: url(https://dharmeshpatel04.files.wordpress.com/2015/06/photography-camera-hd-wallpaper1.jpg?w=300&h=188);
+  animation-delay: 10s; 
+}
+.slideshow li:nth-child(3) { 
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe-o7KMMHLAdw1L8S9W6vIuiGEgr0vyKNA4bwgk7ytBVW5S2BU);
+  animation-delay: 20s; 
+}
+.slideshow li:nth-child(4) { 
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQub_VJgMJsbJojGP6ex1H8w5Z0nz3baGDYE4dDjCbCxi_t7KNm);
+  animation-delay: 30s; 
+}
+.slideshow li:nth-child(5) { 
+  background-image: url(https://s-media-cache-ak0.pinimg.com/236x/d3/2f/d8/d32fd8e661f582fd882dbb2761d88a31--scrapbook-quotes-camera-photography.jpg);
+  animation-delay: 40s; 
+}
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+}
+.no-cssanimations .slideshow li {
+	opacity: 1;
+}
