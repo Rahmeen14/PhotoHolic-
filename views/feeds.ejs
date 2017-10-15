@@ -15,19 +15,15 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/person/<%=u.user_id%>/">My Profile</a></li>
-                        <li><a href="/person/<%=u.user_id%>/follows">Network</a></li>
-                        <li><a href="/person/<%=u.user_id%>/feeds">Feeds</a></li>
+                        <li><a href="/person/<%=id%>/">My Profile</a></li>
+                        <li><a href="/person/<%=id%>/follows">Network</a></li>
+                        <li><a href="/person/<%=id%>/feeds">Feeds</a></li>
                          <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-<h1><%=u.user_name%></h1>
-<a href="/person/<%=u.user_id%>/newpersonpost">Add new post</a>
-	<img style="width: 30%; height=30%" src="<%= u.profile_pic%>">
-
-        <div class="ui main text container segment">
+    <div class="ui main text container segment">
         <div class="ui top attached ">
                 <div class="ui divided items">
                     <% p.forEach(function(p){%>
@@ -37,13 +33,24 @@
                     <div class="content" style="margin-bottom: 25px">
                      <div class="meta">
                   <span> <%= p.created_at.toDateString() %> </span>
-            
-       	 			</div>
+                    <span> <%= p.likes %> </span>
+                    </div>
                     </div> 
            <div class="description" style="margin-bottom: 25px">
             <div><%=p.caption%> </div>
             <div> <%=p.photo_tag_text%> </div>
-        </div>    
+             <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/comment/<%=id%>/new" class="btn btn-sm btn-success">Comment</a>
+        <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/like/<%=id%>/new" class="btn btn-sm btn-danger">Like</a>
+        <% (p.comments).forEach(function(c){{%>
+            <%if(c!= undefined){%>
+            <div><div><%=c.comment_text%></div>
+               <div> <%=c.comment_user_name%></div>
+               <div><%=c.created_at.toDateString()%></div>
+            </div>
+        
+          <%}}});%>
+        </div> 
+       
         </div>
                  
         <%});%>
@@ -52,4 +59,4 @@
         </div>
         
         </div>
-        <% include partials/footer%>
+    <% include partials/footer %>
