@@ -9,9 +9,12 @@ app.use(express.static(__dirname + "/public"));
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',  //your username
-  password : '@SAR2011INA',
+  password : 'password',
   database : 'photoholic'         //the name of your db
 });
+
+
+
 app.get("/", function(req, res){
  var q = 'SELECT COUNT(*) as count FROM users';
  connection.query(q, function (error, results) {
@@ -20,6 +23,44 @@ app.get("/", function(req, res){
  res.render("index",{results:results});
  });
 });
+
+app.get("/view1", function(req, res){
+connection.query("select * from view1", function(err, result){
+  if(err)
+    res.send("Error, please go back and do something that would work");
+  else
+  {
+    res.render("partials/view1", {result: result});
+  }
+});
+
+});
+
+
+app.get("/view3", function(req, res){
+connection.query("select * from new_view", function(err, result){
+  if(err)
+    res.send("Error, please go back and do something that would work");
+  else
+  {
+    res.render("partials/view3", {result: result});
+  }
+});
+
+});
+
+app.get("/view2", function(req, res){
+connection.query("select * from view2", function(err, result){
+  if(err)
+    res.send("Error, please go back and do something that would work");
+  else
+  {
+    res.render("partials/view2", {result: result});
+  }
+});
+
+});
+
 app.get("/login", function(req, res){
    res.render("partials/login");
 });
@@ -120,7 +161,7 @@ app.post("/register/page", function(req, res){
     });
   }else{
   
-    res.redirect("/page/"+results.insertId);
+    res.redirect("/page/"+req.body.userid);
   }
 });
 });
@@ -171,7 +212,7 @@ app.get("/person/:id",function(req,res){
 });
 app.get("/page/:id",function(req,res){
 	//res.render("profile",{id:req.params.id});
-  console.log("route hit");
+  console.log(req.params.id);
 	var u={}, r;
 	//const r;
 	var today = new Date();
@@ -229,7 +270,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
   var pic={
     "image_url":req.body.imageurl,
     "caption":req.body.caption,
-    "created_at":today,
+    "posted_at":today,
     "photo_user_id":req.params.id,
     "photo_tag_text":req.body.tags
   }
@@ -313,7 +354,7 @@ app.post("/page/:id/newpagepost",function(req,res){
   var pic={
     "image_url":req.body.imageurl,
     "caption":req.body.caption,
-    "created_at":today,
+    "posted_at":today,
     "photo_user_id":req.params.id,
     "photo_tag_text":req.body.tags
   }
@@ -472,7 +513,7 @@ app.get("/person/:id/feeds",function(req,res){
           if (err)  throw err;
           //var query = 'SELECT * FROM photos WHERE photo_user_id in (' + followed.join() + ')'
           connection.query(
-          'SELECT * FROM photos WHERE photo_user_id in (?) ORDER BY created_at',
+          'SELECT * FROM photos WHERE photo_user_id in (?) ORDER BY posted_at',
           [followed],
           function (err, result) {
             var photoarr=[];
@@ -484,7 +525,7 @@ app.get("/person/:id/feeds",function(req,res){
                 "image_url":result[i].image_url,
               "caption":result[i].caption,
                "photo_id":result[i].photo_id,
-               "created_at":result[i].created_at,
+               "posted_at":result[i].posted_at,
               "photo_user_id":result[i].photo_user_id,
               "photo_tag_text":result[i].photo_tag_text,
               "comments":[],
@@ -574,16 +615,13 @@ app.get("/person/:id/photos/:photo_id/like/:like_creator/new",function(req,res){
       console.log(req);
   var like={
     "like_photo_id":req.params.photo_id,
-    "created_at":today,
+
+
     "like_user_id":req.params.like_creator
   }
    connection.query('INSERT INTO likes SET ?',like, function (error, results, fields) {
   if (error) {
-    console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    })
+        res.redirect("/person/"+req.params.like_creator+"/feeds");
   }else
   {
     //s("results are"+results);

@@ -1,0 +1,13 @@
+<h1>MOST ACTIVE USERS</h1>
+<% for(var i=0; i<result.length; i++){ %>
+	<div>
+		<img style="height:30%; width:30%" src="<%= result[i].profile_pic %>">
+	</div>
+	<div>
+		<span><%= result[i].user_name%></span>
+	<div>
+	<div>
+		<span><%= result[i].email_id%></span>
+	<div>
+	<hr>
+<%};%>
