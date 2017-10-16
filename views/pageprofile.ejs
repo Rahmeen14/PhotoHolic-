@@ -1,6 +1,53 @@
-<% include partials/header %>
-	<h1><%=u.page_title%></h1>
-	<h2><%=u.purpose%></h2>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PhotoHolic</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">PhotoHolic</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/page/<%=u.user_id%>/">My Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<h1><%=u.user_name%></h1>
+<a href="/page/<%=u.user__id%>/newpagepost">Add new post</a>
 	<img style="width: 30%; height=30%" src="<%= u.profile_pic%>">
 
-<% include partials/footer %>
+        <div class="ui main text container segment">
+        <div class="ui top attached ">
+                <div class="ui divided items">
+                    <% p.forEach(function(p){%>
+                    <div class="item">
+                         <div class="image ui medium rounded" style="margin-bottom: 25px width:200px height: 200px" ><img src="<%= p.image_url%>">
+                         </div>
+                    <div class="content" style="margin-bottom: 25px">
+                     <div class="meta">
+                  <span> <%= p.created_at.toDateString() %> </span>
+            
+       	 			</div>
+                    </div> 
+           <div class="description" style="margin-bottom: 25px">
+            <div><%=p.caption%> </div>
+            <div> <%=p.photo_tag_text%> </div>
+        </div>    
+        </div>
+                 
+        <%});%>
+                
+            </div>
+        </div>
+        
+        </div>
+        <% include partials/footer%>
