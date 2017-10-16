@@ -4,8 +4,18 @@
         <title>PhotoHolic</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+         <link rel="stylesheet" href="style.css">
+         <style type="text/css">
+             .img{
+                    margin: 0 auto;
+                    width: 100%;
+                    height:900px;
+                    text-align: center;
+                    display: inline-block;
+                }
+         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="/style.css">
+       
     </head>
     <body>
     <nav class="navbar navbar-default">
@@ -27,11 +37,12 @@
         <div class="ui top attached ">
                 <div class="ui divided items">
                     <% p.forEach(function(p){%>
-                    <div class="item">
-                         <div class="image ui medium rounded" style="margin-bottom: 25px width:200px height: 200px" ><img src="<%= p.image_url%>">
+                    <div class="item thumbnail">
+                         <div  class="img img-responsive" ><img src="<%= p.image_url%>" >
                          </div>
-                    <div class="content" style="margin-bottom: 25px">
-                     <div class="meta">
+                         <div class="caption">
+                    <div  >
+                     <div >
                   <span> <%= p.created_at.toDateString() %> </span>
                     <span> <%= p.likes %> </span>
                     </div>
@@ -39,6 +50,7 @@
            <div class="description" style="margin-bottom: 25px">
             <div><%=p.caption%> </div>
             <div> <%=p.photo_tag_text%> </div>
+            </div>
              <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/comment/<%=id%>/new" class="btn btn-sm btn-success">Comment</a>
         <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/like/<%=id%>/new" class="btn btn-sm btn-danger">Like</a>
         <% (p.comments).forEach(function(c){{%>

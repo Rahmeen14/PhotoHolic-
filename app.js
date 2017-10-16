@@ -58,7 +58,9 @@ app.post("/login", function(req, res){
   }
 );	
   });	//connection.close();
-
+app.get("/logout", function(req, res){
+   res.redirect("/");
+});
 // show register form
 app.get("/register", function(req, res){
    res.render("partials/register"); 
