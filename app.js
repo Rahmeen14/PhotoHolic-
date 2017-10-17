@@ -201,8 +201,12 @@ app.get("/person/:id",function(req,res){
          [ui],
           function (err, result) {
           if (err) console.log("err");
+          var ress=result;
+          connection.query('select * from person where userid = ?', [ui], function(err, result){
+             res.render("personprofile",{u:us,p:ress, per:result[0]});
+          });
            // console.log(result);
-          res.render("personprofile",{u:us,p:result});
+         
         //res.render("personprofile",{u:result[0]});
         //console.log("sent user:")
       });
@@ -254,14 +258,9 @@ app.get("/page/:id",function(req,res){
         //res.render("personprofile",{u:result[0]});
         //console.log("sent user:")
       });
-
-  	
-  }
-);	
-  }
-);	//connection.close();
-	
-});
+  });	
+  });	//connection.close();
+	});
 app.get("/person/:id/newpersonpost",function(req,res){
 	res.render("partials/newpersonpost",{id:req.params.id});
 	});
@@ -500,9 +499,7 @@ app.post("/person/:id/:followee_id", function(req, res){
 
 app.get("/person/:id/feeds",function(req,res){
     var id=req.params.id;
-     connection.query(
-
-          'SELECT followee_user_id FROM follows WHERE follower_user_id = ?',
+     connection.query('SELECT followee_user_id FROM follows WHERE follower_user_id = ?',
          [id],
           function (err, result) {
            
@@ -512,8 +509,7 @@ app.get("/person/:id/feeds",function(req,res){
             console.log(followed);
           if (err)  throw err;
           //var query = 'SELECT * FROM photos WHERE photo_user_id in (' + followed.join() + ')'
-          connection.query(
-          'SELECT * FROM photos WHERE photo_user_id in (?) ORDER BY posted_at',
+          connection.query('SELECT * FROM photos WHERE photo_user_id in (?) ORDER BY posted_at',
           [followed],
           function (err, result) {
             var photoarr=[];
@@ -534,7 +530,7 @@ app.get("/person/:id/feeds",function(req,res){
              photoarr.push(obj);
              pid.push(result[i].photo_id);
             }
-           // console.log(photoarr);
+            console.log(photoarr);
              connection.query(
              'SELECT * FROM comments WHERE comment_photo_id in (?) ',
                 [pid],
@@ -575,7 +571,10 @@ app.get("/person/:id/feeds",function(req,res){
 
                 console.log(photoarr);
                // res.send("please");
+               if(photoarr.length !=0)
             res.render("feeds",{p:photoarr,id:id});
+          else
+            render.send("marjaniyaaa");
           });
         });
       });

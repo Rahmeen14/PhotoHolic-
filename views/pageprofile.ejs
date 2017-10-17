@@ -21,10 +21,25 @@
             </div>
         </div>
     </nav>
-<h1><%=u.user_name%></h1>
-<a href="/page/<%=u.user__id%>/newpagepost">Add new post</a>
-	<img style="width: 30%; height=30%" src="<%= u.profile_pic%>">
+<h1 style="text-align: center;"><span style="margin-right: 15px">Hey Photoholic</span><em><%=u.user_name%></em></h1>
 
+	<div style="margin-left: 20%; margin-right: 20%">
+    <img style="width: 50%; height:50%; border-right: #999999 10px outset; border-bottom: #999999 4px outset; border-left: #000000 4px outset; border-top: #000000 4px outset; align-content: center;" src="<%= u.profile_pic%>">
+<div>
+    <a style="text-align: center;" href="/person/<%=u.user_id%>/newpersonpost"><button style="width:50%; margin-top: 10px">What are you posting toady? </button></a>  
+</div>
+
+</div>
+	<div>
+     <hr>
+    <hr>
+    <h2 style="text-align: center"><strong>Photoholicism at its peak!</strong></h2>
+    <hr>
+    <hr>
+
+    </div>
+    
+</div>
         <div class="ui main text container segment">
         <div class="ui top attached ">
                 <div class="ui divided items">

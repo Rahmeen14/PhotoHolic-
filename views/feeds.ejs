@@ -4,12 +4,13 @@
         <title>PhotoHolic</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
          <link rel="stylesheet" href="style.css">
          <style type="text/css">
-             .img{
+             img{
                     margin: 0 auto;
-                    width: 100%;
-                    height:900px;
+                    width: 300px;
+                    height:300px;
                     text-align: center;
                     display: inline-block;
                 }
@@ -41,25 +42,35 @@
                          <div  class="img img-responsive" ><img src="<%= p.image_url%>" >
                          </div>
                          <div class="caption">
-                    <div  >
+                    <div  style="width: 300px; border-style: solid; border-width: 1px; margin-bottom: 5%; border-radius: 5px; padding: 2% 2%">
                      <div >
-                  <span> <%= p.posted_at.toDateString() %> </span>
-                    <span> <%= p.likes %> </span>
+                      <div>
+                  <span style="font-size: 10px"> <%= p.posted_at.toDateString() %> </span>
+                  <p> <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span><%= p.likes %> </p>
                     </div>
                     </div> 
            <div class="description" style="margin-bottom: 25px">
-            <div><%=p.caption%> </div>
-            <div> <%=p.photo_tag_text%> </div>
+            <div style="margin-top: 5%; margin-bottom: 5%"><em> <%=p.caption%> </em></div>
+            <div style="font-size: 1.5em; color: blue"> <%=p.photo_tag_text%> </div>
             </div>
+          </div>
              <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/comment/<%=id%>/new" class="btn btn-sm btn-success">Comment</a>
         <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/like/<%=id%>/new" class="btn btn-sm btn-danger">Like</a>
-        <% (p.comments).forEach(function(c){{%>
+        <ul>
+           <% (p.comments).forEach(function(c){{%>
             <%if(c!= undefined){%>
-            <div><div><%=c.comment_text%></div>
-               <div> <%=c.comment_user_name%></div>
-               <div><%=c.created_at.toDateString()%></div>
-            </div>
+            <li>
+              <ul>
+               <li><div style><%=c.comment_text%></div></li>
+               <p><span>~by</span> <%=c.comment_user_name%></p>
+
+              </ul>
+             
+            </li>
         
+
+        </ul>
+       
           <%}}});%>
         </div> 
        
