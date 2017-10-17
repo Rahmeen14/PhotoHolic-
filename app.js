@@ -236,6 +236,30 @@ app.get("/delete/person/:perID/:id", function(req, res){
   });
 });
 
+app.get("/delete/page/:perID/:id", function(req, res){
+ 
+    connection.query("delete from likes where like_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err;
+    connection.query("delete from comments where comment_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err;
+    connection.query("delete from hashtags where tag_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err; 
+     connection.query("delete from photos where photo_id = ?", [req.params.id], function(err, result){
+    if(err)
+      throw err;
+    res.redirect("/page/"+req.params.perID);
+  });
+  });
+  });
+  });
+});
+
+
+
+
 app.get("/page/:id",function(req,res){
 	//res.render("profile",{id:req.params.id});
   console.log(req.params.id);
@@ -246,8 +270,9 @@ app.get("/page/:id",function(req,res){
   'SELECT * FROM page WHERE user__id = ?',
   [req.params.id],
   function (err, result) {
-    if (err)
-    console.log("e7");
+    if (err || result[0]==undefined)
+    {console.log("e7");
+    }
 
     console.log("lalala");
     console.log(result[0]);
@@ -269,6 +294,7 @@ app.get("/page/:id",function(req,res){
   	u["password"]=result[0].password;
   	u["profile_pic"]=result[0].profile_pic;
   	u["created_at"]=today;
+    u["user_id"]=req.params.id;
 
      connection.query(
           'SELECT * FROM photos WHERE photo_user_id = ?',
@@ -439,6 +465,8 @@ app.post("/page/:id/newpagepost",function(req,res){
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
               });
+            console.log("yayyyy");
+            console.log(m);
           res.render("pageprofile",{u:m,p:result});
 
          // res.redirect("/person/"+req.params.id+"/");

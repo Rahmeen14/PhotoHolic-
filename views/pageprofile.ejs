@@ -26,7 +26,7 @@
 	<div style="margin-left: 20%; margin-right: 20%">
     <img style="width: 50%; height:50%; border-right: #999999 10px outset; border-bottom: #999999 4px outset; border-left: #000000 4px outset; border-top: #000000 4px outset; align-content: center;" src="<%= u.profile_pic%>">
 <div>
-    <a style="text-align: center;" href="/person/<%=u.user_id%>/newpersonpost"><button style="width:50%; margin-top: 10px">What are you posting toady? </button></a>  
+    <a style="text-align: center;" href="/page/<%=u.user_id%>/newpagepost"><button style="width:50%; margin-top: 10px">What are you posting toady? </button></a>  
 </div>
 
 </div>
@@ -58,7 +58,8 @@
             <div> <%=p.photo_tag_text%> </div>
         </div>    
         </div>
-                 
+          <%var hreff="/delete/page/"+u.user_id+"/"+p.photo_id;%>
+        <a href="<%=hreff%>"><button>Delete Post</button></a>        
         <%});%>
                 
             </div>
