@@ -62,6 +62,8 @@
             <div> <%=p.photo_tag_text%> </div>
         </div>    
         </div>
+        <%var hreff="/delete/person/"+u.user_id+"/"+p.photo_id;%>
+        <a href="<%=hreff%>"><button>Delete Post</button></a>
                  
         <%});%>
                 

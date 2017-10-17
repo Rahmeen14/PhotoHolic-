@@ -194,7 +194,7 @@ app.get("/person/:id",function(req,res){
   function (err, result) {
     var us= result[0];
    // console.log(us);
-    var ui=result[0].user_id;
+    var ui=req.params.id;
     if (err) console.log("err");
   	 connection.query(
           'SELECT * FROM photos WHERE photo_user_id = ?',
@@ -214,6 +214,28 @@ app.get("/person/:id",function(req,res){
   	//console.log(u);
   });	
 });
+
+app.get("/delete/person/:perID/:id", function(req, res){
+ 
+    connection.query("delete from likes where like_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err;
+    connection.query("delete from comments where comment_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err;
+    connection.query("delete from hashtags where tag_photo_id= ?",[req.params.id], function(err, result){
+    if(err)
+      throw err; 
+     connection.query("delete from photos where photo_id = ?", [req.params.id], function(err, result){
+    if(err)
+      throw err;
+    res.redirect("/person/"+req.params.perID);
+  });
+  });
+  });
+  });
+});
+
 app.get("/page/:id",function(req,res){
 	//res.render("profile",{id:req.params.id});
   console.log(req.params.id);
@@ -303,7 +325,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
     res.send({
       "code":400,
       "failed":"error ocurred"
-    })
+    });
   }else{
   	
   	
@@ -319,27 +341,27 @@ app.post("/person/:id/newpersonpost",function(req,res){
   [req.params.id],
   function (err, result) {
       console.log("e1");
-  	 var m=result[0];
+  	 var m=result[0], per;
   	 connection.query(
 
   				'SELECT * FROM photos WHERE photo_user_id = ?',
  				 [req.params.id],
   				function (err, result) {
     			if (err) console.log("e5");
-
+          var pho=result;
     			//console.log("u cannot reach me");
     				//console.log(result);
             var sql = "INSERT INTO hashtags (tag_name,tag_photo_id,created_at) VALUES ?";
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
-              });
-    			res.render("personprofile",{u:m,p:result});
+             connection.query("select * from person where userid = ?", [req.params.id], function(err, result){
+    			res.render("personprofile",{u:m,p:pho, per:result[0]});
          // res.redirect("/person/"+req.params.id+"/");
     		//res.render("personprofile",{u:result[0]});
     	});
     //console.log('The solution is: ', req.body.page);
 });
-    		
+   }); 		});
   }
 
 	});
