@@ -494,6 +494,7 @@ app.get("/person/:id/follows",function(req,res){
               followed.push(result[i].followee_user_id);
              //console.log(not_followed);
           if (err)  console.log("e2");
+          
           connection.query(
 
           'SELECT user_id FROM users WHERE user_id != ?',
@@ -504,10 +505,17 @@ app.get("/person/:id/follows",function(req,res){
             for(i=0;i<result.length;++i)
               not_followed.push(result[i].user_id);
           if (err) console.log("e3");
-
+    console.log(JSON.stringify(followed)==JSON.stringify(not_followed));   
+          
           //var diff = $(not_followed).not(followed);
+          if((JSON.stringify(followed)==JSON.stringify(not_followed)))
+          {
+            res.send("NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
+          }
+          else{
           diff = not_followed.filter(function(x) { return followed.indexOf(x) < 0 })
-          //console.log(diff);
+          
+          
           connection.query(
          'SELECT * FROM users WHERE user_id in (?)',
           [diff],
@@ -516,7 +524,7 @@ app.get("/person/:id/follows",function(req,res){
 
             res.render("follows",{f:result,id:id});
           });
-          
+          }
 
         });
           
@@ -552,14 +560,17 @@ app.get("/person/:id/feeds",function(req,res){
      connection.query('SELECT followee_user_id FROM follows WHERE follower_user_id = ?',
          [id],
           function (err, result) {
-           
+            if (err)  throw err;
             var followed=[];
             for( i=0;i<result.length;++i)
               followed.push(result[i].followee_user_id);
-            console.log(followed);
-          if (err)  throw err;
-          //var query = 'SELECT * FROM photos WHERE photo_user_id in (' + followed.join() + ')'
-          connection.query('SELECT * FROM photos WHERE photo_user_id in (?) ORDER BY posted_at',
+            console.log("Followed are "+followed);
+            if(followed.length == 0)
+              {res.send("NOTHING IN FEEDS! PLEASE FOLLOW SOME USERS TO OBTAIN ONE!");
+          }
+                   //var query = 'SELECT * FROM photos WHERE photo_user_id in (' + followed.join() + ')'
+                   else{
+          connection.query('SELECT * FROM photos WHERE photo_user_id in ?',
           [followed],
           function (err, result) {
             var photoarr=[];
@@ -621,13 +632,12 @@ app.get("/person/:id/feeds",function(req,res){
 
                 console.log(photoarr);
                // res.send("please");
-               if(photoarr.length !=0)
+          
             res.render("feeds",{p:photoarr,id:id});
-          else
-            render.send("marjaniyaaa");
+         
           });
         });
-      });
+      });}
     });
    });
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){

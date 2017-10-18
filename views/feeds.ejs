@@ -37,6 +37,7 @@
     <div class="ui main text container segment">
         <div class="ui top attached ">
                 <div class="ui divided items">
+                	<%if( p != undefined){%>
                     <% p.forEach(function(p){%>
                     <div class="item thumbnail">
                          <div  class="img img-responsive" ><img src="<%= p.image_url%>" >
@@ -76,7 +77,7 @@
        
         </div>
                  
-        <%});%>
+        <%}); }%>
                 
             </div>
         </div>
