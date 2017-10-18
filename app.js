@@ -561,16 +561,13 @@ app.get("/person/:id/feeds",function(req,res){
          [id],
           function (err, result) {
             if (err)  throw err;
+            if(result.length == 0)
+              {res.send("NOTHING IN FEEDS! PLEASE FOLLOW SOME USERS TO OBTAIN ONE!");
+          }
             var followed=[];
             for( i=0;i<result.length;++i)
               followed.push(result[i].followee_user_id);
-            console.log("Followed are "+followed);
-            if(followed.length == 0)
-              {res.send("NOTHING IN FEEDS! PLEASE FOLLOW SOME USERS TO OBTAIN ONE!");
-          }
-                   //var query = 'SELECT * FROM photos WHERE photo_user_id in (' + followed.join() + ')'
-                   else{
-          connection.query('SELECT * FROM photos WHERE photo_user_id in ?',
+            connection.query('SELECT * FROM photos WHERE photo_user_id in (?) order by posted_at desc',
           [followed],
           function (err, result) {
             var photoarr=[];
@@ -637,7 +634,7 @@ app.get("/person/:id/feeds",function(req,res){
          
           });
         });
-      });}
+      });
     });
    });
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
