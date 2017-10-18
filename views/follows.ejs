@@ -38,9 +38,9 @@
             <h5> <%= f.user_name %> </h5>
           </div>
             <div>
-            <form id="follow" class="ui form" action="/person/<%=id%>/<%=f.user_id%>" method="POST">
-          <button class="ui red basic button" >Follow</button>
-         </form>
+           
+          <button class="ui red basic button" ><a href="/profile_view/<%=f.user_id%>/<%=id%>">Visit Profile</a></button>
+         
             </div>
           </div>
         </div>

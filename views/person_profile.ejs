@@ -17,16 +17,16 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/person/<%=u.user_id%>/">My Profile</a></li>
-                        <li><a href="/person/<%=u.user_id%>/follows">Network</a></li>
+                        <li><a href="/person/<%=id%>/">My Profile</a></li>
+                        <li><a href="/person/<%=id%>/follows">Network</a></li>
 
-        <li><a style=" background-color: 'black'"  href="/view1/<%=u.user_id%>" >Most Liked Pictures</a></li>
+        <li><a style=" background-color: 'black'"  href="/view1/<%=id%>" >Most Liked Pictures</a></li>
     
-       <li><a style="background-color: 'black' "  href="/view2/<%=u.user_id%>">Most Active Users</a></li>
+       <li><a style="background-color: 'black' "  href="/view2/<%=id%>">Most Active Users</a></li>
      
        <li> <a style= "background-color: 'black' "  href="/view3">Most Used Hashtags</a></li>   
   
-                        <li><a href="/person/<%=u.user_id%>/feeds">Feeds</a></li>
+                        <li><a href="/person/<%=id%>/feeds">Feeds</a></li>
                          <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -46,7 +46,13 @@
         <p style="font-size: 1.5em; margin-top: 30%">Followed by : <span><%=foll%></span></p>
         <p style="font-size: 1.5em; margin-top: 1%">Following : <span><%=folr%></span></p>
         <p style="font-size: 1.2em">Reach out to me at : <span><%=u.email_id%></span></p>
-         
+        <%if(!truth_value){%>
+          <form id="follow" class="ui form" action="/person/<%=id%>/<%=u.user_id%>" method="POST">
+          <button class="ui red basic button " style="color: red"  >Follow Me</button>
+         </form>
+         <%} else{%>
+           <button class="ui red basic button" style="color: red">Following</button>
+         <%}%>
     </div>
  
    </div>

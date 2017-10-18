@@ -224,8 +224,23 @@ app.get("/person/:id",function(req,res){
   });	
 });
 
-app.get("/profile_view/:id", function(req, res){
-  var count=0, count2=0;
+app.get("/profile_view/:id/:logged_id", function(req, res){
+  var count=0, count2=0, truth_value=false;
+  connection.query('select follower_user_id from follows where followee_user_id = ?', [req.params.id], function(err, result){
+      if(err)
+        throw err;
+      else
+      {
+        for(var i=0;i<result.length; i++)
+        {
+          if(result[i].follower_user_id===req.params.logged_id)
+          {
+            truth_value=true;
+            break;
+          }
+        }
+      }
+  });
   connection.query(
   'SELECT * FROM users WHERE user_id = ?',
   [req.params.id],
@@ -249,7 +264,7 @@ app.get("/profile_view/:id", function(req, res){
           if (err) console.log("err");
           var ress=result;
           connection.query('select * from person where userid = ?', [ui], function(err, result){
-             res.render("person_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2});
+             res.render("person_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2, id:req.params.logged_id,truth_value:truth_value});
           });
            // console.log(result);
          
@@ -596,7 +611,7 @@ app.post("/person/:id/:followee_id", function(req, res){
   }else{
     console.log('The solution is: ', results);
     //res.send("hey");
-    res.redirect("/profile_view/"+req.params.followee_id);
+    res.redirect("/profile_view/"+req.params.followee_id+"/"+req.params.id);
   }
 });
 });
