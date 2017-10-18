@@ -24,13 +24,13 @@ app.get("/", function(req, res){
  });
 });
 
-app.get("/view1", function(req, res){
+app.get("/view1/:id", function(req, res){
 connection.query("select * from view1", function(err, result){
   if(err)
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("partials/view1", {result: result});
+    res.render("partials/view1", {p: result, id:req.params.id});
   }
 });
 
@@ -49,13 +49,13 @@ connection.query("select * from new_view", function(err, result){
 
 });
 
-app.get("/view2", function(req, res){
+app.get("/view2/:id", function(req, res){
 connection.query("select * from view2", function(err, result){
   if(err)
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("partials/view2", {result: result});
+    res.render("partials/view2", {f: result, id:req.params.id});
   }
 });
 
@@ -188,11 +188,20 @@ app.post("/register/person", function(req, res){
 
 app.get("/person/:id",function(req,res){
 	//console.log(res);
+  var count=0, count2=0;
 	connection.query(
   'SELECT * FROM users WHERE user_id = ?',
   [req.params.id],
   function (err, result) {
     var us= result[0];
+    connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count=result[0].cnt;
+    });
+    connection.query('select count(*) as cnt from follows where follower_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count2=result[0].cnt;
+    });
    // console.log(us);
     var ui=req.params.id;
     if (err) console.log("err");
@@ -203,7 +212,7 @@ app.get("/person/:id",function(req,res){
           if (err) console.log("err");
           var ress=result;
           connection.query('select * from person where userid = ?', [ui], function(err, result){
-             res.render("personprofile",{u:us,p:ress, per:result[0]});
+             res.render("personprofile",{u:us,p:ress, per:result[0], foll:count, folr:count2});
           });
            // console.log(result);
          
@@ -213,6 +222,43 @@ app.get("/person/:id",function(req,res){
      //console.log("sent user:")
   	//console.log(u);
   });	
+});
+
+app.get("/profile_view/:id", function(req, res){
+  var count=0, count2=0;
+  connection.query(
+  'SELECT * FROM users WHERE user_id = ?',
+  [req.params.id],
+  function (err, result) {
+    var us= result[0];
+    connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count=result[0].cnt;
+    });
+    connection.query('select count(*) as cnt from follows where follower_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count2=result[0].cnt;
+    });
+   // console.log(us);
+    var ui=req.params.id;
+    if (err) console.log("err");
+     connection.query(
+          'SELECT * FROM photos WHERE photo_user_id = ?',
+         [ui],
+          function (err, result) {
+          if (err) console.log("err");
+          var ress=result;
+          connection.query('select * from person where userid = ?', [ui], function(err, result){
+             res.render("person_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2});
+          });
+           // console.log(result);
+         
+        //res.render("personprofile",{u:result[0]});
+        //console.log("sent user:")
+      });
+     //console.log("sent user:")
+    //console.log(u);
+  }); 
 });
 
 app.get("/delete/person/:perID/:id", function(req, res){
@@ -550,7 +596,7 @@ app.post("/person/:id/:followee_id", function(req, res){
   }else{
     console.log('The solution is: ', results);
     //res.send("hey");
-    res.redirect("/person/"+req.params.id);
+    res.redirect("/profile_view/"+req.params.followee_id);
   }
 });
 });

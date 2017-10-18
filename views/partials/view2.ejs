@@ -1,13 +1,57 @@
-<h1>MOST ACTIVE USERS</h1>
-<% for(var i=0; i<result.length; i++){ %>
-	<div>
-		<img style="height:30%; width:30%" src="<%= result[i].profile_pic %>">
-	</div>
-	<div>
-		<span><%= result[i].user_name%></span>
-	<div>
-	<div>
-		<span><%= result[i].email_id%></span>
-	<div>
-	<hr>
-<%};%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PhotoHolic</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">PhotoHolic</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/person/<%=id%>/">My Profile</a></li>
+                           <li><a style=" background-color: 'black'"  href="/view1/<%=id%>" >Most Liked Pictures</a></li>
+    
+       <li><a style="background-color: 'black' "  href="/view2/<%=id%>">Most Active Users</a></li>
+     
+       <li> <a style= "background-color: 'black' "  href="/view3">Most Used Hashtags</a></li>   
+                        <li><a href="/person/<%=id%>/follows">Network</a></li>
+                        <li><a href="/person/<%=id%>/feeds">Feeds</a></li>
+                         <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container">
+<header class="jumbotron">
+  <h1>Most Active Users!</h1>
+</header>
+<div class="row text-center">
+    <% f.forEach(function(f){ %>
+      <div>
+        <div class="col-md-12 col-sm-12">
+          <div class="thumbnail">
+          <img src=" <%= f.profile_pic %> " style="width: 30%; height: 30%">
+          <div>
+            <h5> <%= f.user_name %> </h5>
+          </div>
+            <div>
+            <form id="follow" class="ui form" action="/person/<%=id%>/<%=f.user_id%>" method="POST">
+          <button class="ui red basic button" >Follow</button>
+         </form>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+<% }); %>
+</div>
+
+</div>

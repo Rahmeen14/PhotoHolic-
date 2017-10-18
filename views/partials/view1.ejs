@@ -1,13 +1,95 @@
-<h1>MOST LIKED PICTURES</h1>
-<% for(var i=0; i<result.length; i++){ %>
-	<div>
-		<img style="height:30%; width:30%" src="<%= result[i].image_url %>">
-	</div>
-	<div>
-		<span><%= result[i].caption%></span>
-	<div>
-	<div>
-		<span><%= result[i].photo_tag_text%></span>
-	<div>
-	<hr>
-<%};%>
+<html>
+<head>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+         <link rel="stylesheet" href="style.css">
+ <style type="text/css">
+             img{
+                    margin: 0 auto;
+                    width: 300px;
+                    height:300px;
+                    text-align: center;
+                    display: inline-block;
+                }
+         </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">PhotoHolic</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/person/<%=id%>/">My Profile</a></li>
+                           <li><a style=" background-color: 'black'"  href="/view1/<%=id%>" >Most Liked Pictures</a></li>
+    
+       <li><a style="background-color: 'black' "  href="/view2/<%=id%>">Most Active Users</a></li>
+     
+       <li> <a style= "background-color: 'black' "  href="/view3">Most Used Hashtags</a></li>   
+                        <li><a href="/person/<%=id%>/follows">Network</a></li>
+                        <li><a href="/person/<%=id%>/feeds">Feeds</a></li>
+                         <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container">
+<header class="jumbotron">
+  <h1>Most Liked Pictures</h1>
+</header>
+ <div class="ui main text container segment">
+
+        <div class="ui top attached ">
+                <div class="ui divided items">
+                	<%if( p != undefined){%>
+                    <% p.forEach(function(p){%>
+                    <div class="item thumbnail">
+                         <div  class="img img-responsive" ><img src="<%= p.image_url%>" >
+                         </div>
+                         <div class="caption">
+                    <div  style="width: 300px; border-style: solid; border-width: 1px; margin-bottom: 5%; border-radius: 5px; padding: 2% 2%">
+                     <div >
+                      <div>
+                  <span style="font-size: 10px"> <%= p.posted_at.toDateString() %> </span>
+                  <p> <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span><%= p.likes %> </p>
+                    </div>
+                    </div> 
+           <div class="description" style="margin-bottom: 25px">
+            <div style="margin-top: 5%; margin-bottom: 5%"><em> <%=p.caption%> </em></div>
+            <div style="font-size: 1.0em; color: blue"> <%=p.photo_tag_text%> </div>
+            </div>
+          </div>
+             <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/comment/<%=id%>/new" class="btn btn-sm btn-success">Comment</a>
+        <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/like/<%=id%>/new" class="btn btn-sm btn-danger">Like</a>
+        <ul>
+        	<% if (p!= undefined && p.comments!=undefined){%>
+           <% (p.comments).forEach(function(c){%>
+            <%if(c!= undefined){%>
+            <li>
+              <ul>
+               <li><div style><%=c.comment_text%></div></li>
+               <p><span>~by</span> <%=c.comment_user_name%></p>
+
+              </ul>
+             
+            </li>
+        
+
+        </ul>
+       
+          <%}});}%>
+        </div> 
+       
+        </div>
+                 
+        <%}); }%>
+                
+            </div>
+        </div></div>
+        
+        </div>
+        </body>
+        </html>

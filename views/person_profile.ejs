@@ -32,7 +32,7 @@
             </div>
         </div>
     </nav>
-<h1 style="text-align: center;"><span style="margin-right: 15px">Hey Photoholic</span><em><%=u.user_name%></em></h1>
+<h1 style="text-align: center;"><span style="margin-right: 15px">Welcome to </span><em><%=u.user_name%>'s</em> <span style="margin-left: 10px">Profile</span></h1>
 <h2 style="text-align: center;"><span style="margin-right: 15px"><%= per.first_name%></span><span><%=per.last_name%></span></h2>
 <div style="margin-left: 20%; margin-right: 20%" class="row">
     <div class="col-md-9 col-sm-9">
@@ -41,11 +41,11 @@
     </div>
     <div class="col-sm-3 col-md-3" >
         <!-- <p><a href="/followers/<%=u.user_id%>">Followed by :</a><span style="margin-right: 10px"><%= foll%> Users</span></p> -->
-          <a style="text-align: center; color: black; width:100%" href="/person/<%=u.user_id%>/newpersonpost"><button style="width:100%; height: 20%; border-radius: 5%">What are you posting toady? </button></a>  
+        
 
         <p style="font-size: 1.5em; margin-top: 30%">Followed by : <span><%=foll%></span></p>
         <p style="font-size: 1.5em; margin-top: 1%">Following : <span><%=folr%></span></p>
-        <p style="font-size: 1.2em">Contact Me : <span><%=u.email_id%></span></p>
+        <p style="font-size: 1.2em">Reach out to me at : <span><%=u.email_id%></span></p>
          
     </div>
  
@@ -58,7 +58,7 @@
 	<div>
      <hr>
     <hr>
-    <h2 style="text-align: center"><strong>Photoholicism at its peak!</strong></h2>
+    <h2 style="text-align: center"><strong>My Photoholicism manifested</strong></h2>
     <hr>
     <hr>
 
@@ -83,8 +83,7 @@
             <div> <%=p.photo_tag_text%> </div>
         </div>    
         </div>
-        <%var hreff="/delete/person/"+u.user_id+"/"+p.photo_id;%>
-        <a href="<%=hreff%>"><button>Delete Post</button></a>
+       
                  
         <%});%>
                 
