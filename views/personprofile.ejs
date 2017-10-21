@@ -36,11 +36,13 @@
     </div>
     <div class="col-sm-3 col-md-3" >
         <!-- <p><a href="/followers/<%=u.user_id%>">Followed by :</a><span style="margin-right: 10px"><%= foll%> Users</span></p> -->
-          <a style="text-align: center; color: black; width:100%" href="/person/<%=u.user_id%>/newpersonpost"><button style="width:100%; height: 20%; border-radius: 5%">What are you posting toady? </button></a>  
-
+          <a class="ui purple basic button " style="color: purple" style="text-align: center; color: black; width:100%" href="/person/<%=u.user_id%>/newpersonpost">What are you posting toady?</a>  
+          <hr>
         <p style="font-size: 1.5em; margin-top: 30%">Followed by : <span><%=foll%></span></p>
         <p style="font-size: 1.5em; margin-top: 1%">Following : <span><%=folr%></span></p>
+        <hr>
         <p style="font-size: 1.2em">Contact Me : <span><%=u.email_id%></span></p>
+        <p><a class="ui blue basic button " style="color: blue" href="/edit/<%=u.user_id%>">Edit Profile</a></p>
          
     </div>
  

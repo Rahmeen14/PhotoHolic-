@@ -27,11 +27,12 @@
         <div class="col-md-9 col-sm-9"> <img style="width: 400px; height:400px; border-right: #999999 10px outset; border-bottom: #999999 4px outset; border-left: #000000 4px outset; border-top: #000000 4px outset; align-content: center; border-radius: 50%" src="<%= u.profile_pic%>"></div>
    
 <div class="col-md-3 col-sm-3">
-    <a style="text-align: center;" href="/page/<%=u.user_id%>/newpagepost"><button style="width:100%; margin-top: 10px">What are you posting toady? </button></a>  
+    <a class="ui purple basic button " style="color: purple" style="text-align: center;" href="/page/<%=u.user_id%>/newpagepost">What are you posting toady?</a>  
     <hr>
     <h3><%=pag.page_title%></h3>
     <h4><em>Our Purpose is </em><%=pag.purpose%></h4>
     <h3>Followed By : <%= cnt%></h3>
+      <a class="ui blue basic button " style="color: blue" style="text-align: center;" href="/edit/<%=u.user_id%>">Edit Profile</a>
 </div>
 
 </div>

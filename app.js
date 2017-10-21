@@ -770,6 +770,71 @@ app.get("/page/profile/:id", function(req, res){
   res.render("page", {});
 });
 
+app.get("/edit/:id", function(req, res){
+  connection.query('select * from users where user_id = ?', [req.params.id], function(err, result){
+    var editProfile={
+              "user_name":result[0].user_name,
+        "email_id":result[0].email_id,
+        "password":result[0].password,
+        "profile_pic":result[0].profile_pic
+    };
+    connection.query('select * from page where user__id = ?', [req.params.id], function(err, result){
+      if(result[0]!= undefined){
+        editProfile["page_title"]=result[0].page_title;
+ 
+       editProfile["purpose"]=result[0].purpose;
+       res.render("editPage", {person: editProfile, id: req.params.id});
+      }
+        else
+        {
+            connection.query('select * from person where userid = ?', [req.params.id], function(err, result){
+                editProfile["first_name"]=result[0].first_name;
+                editProfile["last_name"]=result[0].last_name;
+                res.render("editPerson", {person: editProfile, id: req.params.id});
+            });
+        }
+    });
+  });
+});
+
+app.post('/updatePerson/:id', function(req, res){
+  
+  //console.log("THe body REsponse is     ", req.body);
+  
+  connection.query('update users set ? where user_id = ?', [{
+    "user_id":req.params.id,
+      "user_name":req.body.username,
+        "email_id":req.body.emailid,
+        "password":req.body.password,
+        "profile_pic":req.body.profilepic
+  } ,req.params.id], function(err, result){
+    connection.query('update person set ? where userid = ?', [{
+      "first_name": req.body.firstname,
+      "last_name": req.body.lastname
+    } ,req.params.id], function(err, result){
+          res.redirect("/person/"+req.params.id);
+      });
+    });
+});
+
+app.post('/updatePage/:id', function(req, res){
+      console.log("THe body REsponse is     ", req.body);
+    connection.query('update users set ? where user_id = ?', [{
+    "user_id":req.params.id,
+      "user_name":req.body.username,
+        "email_id":req.body.emailid,
+        "password":req.body.password,
+        "profile_pic":req.body.profilepic
+  } ,req.params.id], function(err, result){
+    connection.query('update page set ? where user__id = ?', [{
+      "page_title": req.body.pagetitle,
+      "purpose": req.body.purpose
+    } ,req.params.id], function(err, result){
+          res.redirect("/page/"+req.params.id);
+      });
+    });
+});
+
 app.listen(3000, 'localhost',function(){
 	console.log("server on duty, mallady");
 });
