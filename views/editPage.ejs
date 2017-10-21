@@ -1,0 +1,60 @@
+
+<% include partials/header %>
+<div class="container">
+    <div class="row">
+         <div style="width:30% ; margin: 40px auto;">
+          <h3>Sign Up!</h3>  
+          </div>
+    <div style="width:30% ; margin: 0 auto;">
+    
+    <form action="/updatePage/<%=id%>" method="POST" class="form-horizontal">
+    <div class="form-group">
+         <label for="username"  class="col-sm-3 control-label">Username:</label>
+           <div class="col-sm-9 ">
+             <input type="text"  value="<%=person.user_name%>" name="username">
+             </div>
+    </div>
+
+    <div class="form-group">
+         <label for="emailid" class="col-sm-3 control-label">EmailId:</label>
+            <div class="col-sm-9 ">
+            <input type="text"  value="<%=person.email_id%>" name="emailid">
+            </div>
+    </div>
+   
+
+     <div class="form-group">
+         <label for="password" class="col-sm-3 control-label">Password:</label>
+            <div class="col-sm-9 ">
+            <input type="password" value="<%=person.password%>" name="password">
+            </div>
+    </div>
+     <div class="form-group">
+         <label for="profilepic" class="col-sm-3 control-label">Profile :</label>
+            <div class="col-sm-9 ">
+            <input type="text" name="profilepic" value="<%=person.profile_pic%>">
+            </div>
+    </div>
+ <div class="form-group">
+         <label for="pagetitle"  class="col-sm-3 control-label">Page Title:</label>
+           <div class="col-sm-9 ">
+             <input type="text" value="<%= person.page_title%>" name="pagetitle">
+             </div>
+    </div>
+
+    <div class="form-group">
+         <label for="purpose" class="col-sm-3 control-label">Purpose:</label>
+            <div class="col-sm-9 ">
+            <input type="text" value="<%= person.purpose%>" name="purpose">
+            </div>
+    </div>
+     <div class="form-group ">
+           <div class="col-sm-offset-3 col-sm-9">
+        <button class="btn  btn-primary "> Submit</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+<% include partials/footer %> 
