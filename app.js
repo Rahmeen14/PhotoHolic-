@@ -50,7 +50,7 @@ connection.query("select * from new_view", function(err, result){
 });
 
 app.get("/view2/:id", function(req, res){
-connection.query("select * from view2", function(err, result){
+connection.query("select * from view2 where user_id != ?", [req.params.id], function(err, result){
   if(err)
     res.send("Error, please go back and do something that would work");
   else
@@ -72,14 +72,16 @@ app.post("/login", function(req, res){
   [req.body.username],
   function (err, result) {
   	console.log(result[0]);
-  	var ui=result[0].user_id;
+  	
     //console.log("user id is"+ui);
   	
     if (err) console.log("o");
     if(result[0]===undefined)
-    	console.log("no such user");
+    	   res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
+  
     else
     {
+      var ui=result[0].user_id;
     	var k=result[0];
     	if(k.password===req.body.password)
     	{
@@ -105,7 +107,7 @@ app.post("/login", function(req, res){
 
      }
     	else
-    		res.send("bhula dena mujhe");
+    		res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
     }
   }
 );	
@@ -124,9 +126,11 @@ app.post("/register", function(req, res){
   var users={
     "user_name":req.body.username,
     "email_id":req.body.emailid,
+    "DOB": req.body.dob,
     "password":req.body.password,
     "profile_pic":req.body.profilepic,
     "created_at":today
+
   }
   connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
   if (error) {
@@ -225,7 +229,8 @@ app.get("/person/:id",function(req,res){
 });
 
 app.get("/profile_view/:id/:logged_id", function(req, res){
-  var count=0, count2=0, truth_value=false;
+  var count=0, count2=0, truth_value=false, isPage=false;
+      
   connection.query('select follower_user_id from follows where followee_user_id = ?', [req.params.id], function(err, result){
       if(err)
         throw err;
@@ -263,11 +268,22 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
           function (err, result) {
           if (err) console.log("err");
           var ress=result;
+          console.log("Is page", isPage);
+          
           connection.query('select * from person where userid = ?', [ui], function(err, result){
+              if(result[0]!=undefined)
              res.render("person_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2, id:req.params.logged_id,truth_value:truth_value});
+              else
+              {
+                  connection.query('select * from page where user__id = ?', [ui], function(err, result){
+             res.render("page_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2, id:req.params.logged_id,truth_value:truth_value});
+          });
+          
+              }
           });
            // console.log(result);
-         
+          
+        
         //res.render("personprofile",{u:result[0]});
         //console.log("sent user:")
       });
@@ -356,17 +372,20 @@ app.get("/page/:id",function(req,res){
   	u["profile_pic"]=result[0].profile_pic;
   	u["created_at"]=today;
     u["user_id"]=req.params.id;
-
+    connection.query('select * from page where user__id = ?',[req.params.id], function(err, result){
+        var pageu=result[0];
+    connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
+      var count= result[0].cnt;
      connection.query(
           'SELECT * FROM photos WHERE photo_user_id = ?',
          [r],
           function (err, result) {
           if (err) console.log("err");
            // console.log(result);
-          res.render("pageprofile",{u:u,p:result});
+          res.render("pageprofile",{pag:pageu,u:u,p:result, cnt: count});
         //res.render("personprofile",{u:result[0]});
         //console.log("sent user:")
-      });
+      });});} );
   });	
   });	//connection.close();
 	});
@@ -611,7 +630,7 @@ app.post("/person/:id/:followee_id", function(req, res){
   }else{
     console.log('The solution is: ', results);
     //res.send("hey");
-    res.redirect("/profile_view/"+req.params.followee_id+"/"+req.params.id);
+    res.redirect("/person/"+req.params.id+"/follows");
   }
 });
 });
@@ -754,3 +773,4 @@ app.get("/page/profile/:id", function(req, res){
 app.listen(3000, 'localhost',function(){
 	console.log("server on duty, mallady");
 });
+

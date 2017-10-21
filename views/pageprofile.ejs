@@ -23,10 +23,15 @@
     </nav>
 <h1 style="text-align: center;"><span style="margin-right: 15px">Hey Photoholic</span><em><%=u.user_name%></em></h1>
 
-	<div style="margin-left: 20%; margin-right: 20%">
-    <img style="width: 50%; height:50%; border-right: #999999 10px outset; border-bottom: #999999 4px outset; border-left: #000000 4px outset; border-top: #000000 4px outset; align-content: center;" src="<%= u.profile_pic%>">
-<div>
-    <a style="text-align: center;" href="/page/<%=u.user_id%>/newpagepost"><button style="width:50%; margin-top: 10px">What are you posting toady? </button></a>  
+	<div style="margin-left: 20%; margin-right: 20%" class="row">
+        <div class="col-md-9 col-sm-9"> <img style="width: 400px; height:400px; border-right: #999999 10px outset; border-bottom: #999999 4px outset; border-left: #000000 4px outset; border-top: #000000 4px outset; align-content: center; border-radius: 50%" src="<%= u.profile_pic%>"></div>
+   
+<div class="col-md-3 col-sm-3">
+    <a style="text-align: center;" href="/page/<%=u.user_id%>/newpagepost"><button style="width:100%; margin-top: 10px">What are you posting toady? </button></a>  
+    <hr>
+    <h3><%=pag.page_title%></h3>
+    <h4><em>Our Purpose is </em><%=pag.purpose%></h4>
+    <h3>Followed By : <%= cnt%></h3>
 </div>
 
 </div>
