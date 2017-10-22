@@ -26,16 +26,25 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
+                
+  
                         <li><a href="/person/<%=id%>/">My Profile</a></li>
                         <li><a href="/person/<%=id%>/follows">Network</a></li>
-                           <li><a style=" background-color: 'black'"  href="/view1/<%=id%>" >Most Liked Pictures</a></li>
+                        <li><a href="/logout">Logout</a></li>
+     <!--    <li class="dropdown">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></a>
+          <ul class="dropdown-menu"> -->
+        
+        <li><a style=" background-color: 'black'"  href="/view1/<%=id%>" >Most Liked Pictures</a></li>
+                    
     
        <li><a style="background-color: 'black' "  href="/view2/<%=id%>">Most Active Users</a></li>
      
        <li> <a style= "background-color: 'black' "  href="/view3">Most Used Hashtags</a></li>   
-  
-                        
-                         <li><a href="/logout">Logout</a></li>
+     <!--    </div></div>
+        </ul>
+        </li>    
+                 -->         
                 </ul>
             </div>
         </div>
@@ -45,13 +54,14 @@
                 <div class="ui divided items">
                 	<%if( p != undefined){%>
                     <% p.forEach(function(p){%>
-                    <div class="item thumbnail">
-                         <div  class="img img-responsive" ><img src="<%= p.image_url%>" >
+                    <div class="item thumbnail" style="height: 450px">
+                         <div  class="img img-responsive" ><img src="<%= p.image_url%>" style=" width:300px ;height: 300px ;margin-top:10%">
                          </div>
                          <div class="caption">
-                    <div  style="width: 300px; border-style: solid; border-width: 1px; margin-bottom: 5%; border-radius: 5px; padding: 2% 2%">
+                    <div  style="width: 350px; border-style: solid; border-width: 1px; margin-bottom: 5%; border-radius: 5px; padding: 2% 2% ;margin-top:10%">
                      <div >
                       <div>
+                      <div style="margin-top: 5%; margin-bottom: 5%"><em>Posted By:  <%=p.photo_user_name%> </em></div>
                   <span style="font-size: 10px"> <%= p.posted_at.toDateString() %> </span>
                   <p> <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span><%= p.likes %> </p>
                     </div>
@@ -63,20 +73,15 @@
           </div>
              <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/comment/<%=id%>/new" class="btn btn-sm btn-success">Comment</a>
         <a href="/person/<%=p.photo_user_id%>/photos/<%=p.photo_id%>/like/<%=id%>/new" class="btn btn-sm btn-danger">Like</a>
-        <ul>
+        
            <% (p.comments).forEach(function(c){{%>
             <%if(c!= undefined){%>
-            <li>
+            
               <ul>
                <li><div style><%=c.comment_text%></div></li>
                <p><span>~by</span> <%=c.comment_user_name%></p>
 
               </ul>
-             
-            </li>
-        
-
-        </ul>
        
           <%}}});%>
         </div> 

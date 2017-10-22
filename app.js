@@ -137,7 +137,8 @@ app.post("/register", function(req, res){
     console.log("error ocurred",error);
     res.send({
       "code":400,
-      "failed":"error ocurred"
+      "failed":"error ocurred",
+      "error": error
     })
   }else{
     //console.log('The solution is: ', req.body.page);
@@ -424,7 +425,11 @@ app.post("/person/:id/newpersonpost",function(req,res){
    
   }
   var hashtags=[];
- 
+  connection.query(
+  'SELECT * FROM users WHERE user_id = ?',
+  [req.params.id],
+  function (err, result) {
+    pic["photo_user_name"]=result[0].user_name;
    connection.query('INSERT INTO photos SET ?',pic, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
@@ -448,6 +453,14 @@ app.post("/person/:id/newpersonpost",function(req,res){
   function (err, result) {
       console.log("e1");
   	 var m=result[0], per;
+     connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count=result[0].cnt;
+    });
+    connection.query('select count(*) as cnt from follows where follower_user_id = ?', [req.params.id], function(err, result){
+        if(result!=undefined)
+        count2=result[0].cnt;
+    });
   	 connection.query(
 
   				'SELECT * FROM photos WHERE photo_user_id = ?',
@@ -461,7 +474,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
              connection.query("select * from person where userid = ?", [req.params.id], function(err, result){
-    			res.render("personprofile",{u:m,p:pho, per:result[0]});
+    			res.render("personprofile",{u:m,p:pho, per:result[0],foll:count,folr:count2});
          // res.redirect("/person/"+req.params.id+"/");
     		//res.render("personprofile",{u:result[0]});
     	});
@@ -471,6 +484,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
   }
 
 	});
+ });
 });
 app.get("/page/:id/newpagepost", function(req, res){
   res.render("partials/newpagepost", {id: req.params.id});
@@ -532,6 +546,11 @@ app.post("/page/:id/newpagepost",function(req,res){
   function (err, result) {
       console.log("e1");
      var m=result[0];
+       connection.query('select * from page where userid = ?', [req.params.id], function(err, result){
+        var pag=result[0];
+        var count=0;
+         connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
+          var count=result[0].cnt;
      connection.query(
 
           'SELECT * FROM photos WHERE photo_user_id = ?',
@@ -547,11 +566,11 @@ app.post("/page/:id/newpagepost",function(req,res){
               });
             console.log("yayyyy");
             console.log(m);
-          res.render("pageprofile",{u:m,p:result});
+          res.render("pageprofile",{pag:pag,u:m,p:result,cnt:count});
 
          // res.redirect("/person/"+req.params.id+"/");
         //res.render("personprofile",{u:result[0]});
-      });
+      }); }); });
     //console.log('The solution is: ', req.body.page);
 });
         
@@ -662,6 +681,7 @@ app.get("/person/:id/feeds",function(req,res){
                "posted_at":result[i].posted_at,
               "photo_user_id":result[i].photo_user_id,
               "photo_tag_text":result[i].photo_tag_text,
+              "photo_user_name":result[i].photo_user_name,
               "comments":[],
               "likes":0
               }
@@ -731,6 +751,12 @@ app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(re
     "comment_user_id":req.params.comment_creator,
     "comment_text":req.body.comment
   }
+  
+   connection.query(
+  'SELECT * FROM users WHERE user_id = ?',
+  [req.params.comment_creator],
+  function (err, result) {
+    comment["comment_user_name"]=result[0].user_name;
    connection.query('INSERT INTO comments SET ?',comment, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
@@ -745,6 +771,7 @@ app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(re
     res.redirect("/person/"+req.params.comment_creator+"/feeds");
   }
   });
+ });
 });
 app.get("/person/:id/photos/:photo_id/like/:like_creator/new",function(req,res){
       var today = new Date();

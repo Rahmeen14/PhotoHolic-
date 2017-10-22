@@ -66,27 +66,35 @@
         <div class="ui top attached ">
                 <div class="ui divided items">
                     <% p.forEach(function(p){%>
-                    <div class="item">
-                         <div class="image ui medium rounded" style="margin-bottom: 25px width:200px height: 200px" ><img src="<%= p.image_url%>">
+                    <div class="item thumbnail">
+                         <div class="image ui medium rounded" style="margin-bottom: 25px; margin-top: 5%; width:200px height: 400px" ><img src="<%= p.image_url%>"  style=" width:300px ;height: 300px">
                          </div>
-                    <div class="content" style="margin-bottom: 25px">
+                           
+                          <div class="caption" >
+                         <div  style="width: 370px; margin-top:10%;border-style: solid; border-width: 1px; margin-bottom: 5%; border-radius: 5px; padding: 2% 2%; border-color: #BB8FCE ">
+                    <div  style="margin-bottom: 25px">
                      <div class="meta">
-                  <span> <%= p.posted_at.toDateString() %> </span>
-            
+                  <span style="font-size: 20px"> <%= p.posted_at.toDateString() %> </span>
+                    </div>
        	 			</div>
-                    </div> 
-           <div class="description" style="margin-bottom: 25px">
-            <div><%=p.caption%> </div>
-            <div> <%=p.photo_tag_text%> </div>
-        </div>    
+                    
+                    </br></br>
+                    <div style="margin-bottom: 25px"> 
+           <div class="description" >
+           
+            <div style="margin: 5%;font-size: 15px; "><%=p.caption%> </div>
+            <div style=" margin: 5%;font-size: 1.0em; color: blue"> <%=p.photo_tag_text%> </div>
+        </div>  
+        </div>
+        </div>
+        </div>
         </div>
         <%var hreff="/delete/person/"+u.user_id+"/"+p.photo_id;%>
         <a href="<%=hreff%>"><button>Delete Post</button></a>
                  
         <%});%>
                 
-            </div>
         </div>
-        
+        </div>
         </div>
         <% include partials/footer%>
