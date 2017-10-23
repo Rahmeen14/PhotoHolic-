@@ -27,6 +27,17 @@
             </div>
         </div>
     </nav>
+     <div class="container">
+    <% if (error && error.length >0){ %>
+     <div class="alert alert-danger">
+       <%= error %>
+     </div>
+     <% }else if(success && success.length >0) { %>
+     <div class="alert alert-success" role="alert">
+       <%= success %>
+     </div>
+     <% } %>
+   </div>
 <h1 style="text-align: center;"><span style="margin-right: 15px">Hey Photoholic</span><em><%=u.user_name%></em></h1>
 <h2 style="text-align: center;"><span style="margin-right: 15px"><%= per.first_name%></span><span><%=per.last_name%></span></h2>
 <div style="margin-left: 20%; margin-right: 20%" class="row">

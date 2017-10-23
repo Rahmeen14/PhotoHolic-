@@ -1,9 +1,13 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
-    mysql 		= require('mysql');
+    mysql 		= require('mysql'),
+    flash       = require("connect-flash");
+    var session = require('express-session');
+    var cookieParser = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+//app.use(flash());
 app.use(express.static(__dirname + "/public"));
 
 var connection = mysql.createConnection({
@@ -13,8 +17,15 @@ var connection = mysql.createConnection({
   database : 'photoholic'         //the name of your db
 });
 
-
-
+app.use(cookieParser('secret'));
+app.use(session({cookie: { maxAge: 60000 }}));
+app.use(flash());
+app.use(function(req, res, next){
+   //res.locals.currentUser = req.user;
+   res.locals.error = req.flash("error");
+   res.locals.success = req.flash("success");
+   next();
+});
 app.get("/", function(req, res){
  var q = 'SELECT COUNT(*) as count FROM users';
  connection.query(q, function (error, results) {
@@ -77,7 +88,11 @@ app.post("/login", function(req, res){
   	
     if (err) console.log("o");
     if(result[0]===undefined)
-    	   res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
+    {
+        req.flash('error', 'Incorrect Username or password!');
+        res.redirect("/login");
+    }
+    	 //  res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
   
     else
     {
@@ -100,6 +115,8 @@ app.post("/login", function(req, res){
            } 
               else
               {
+                 req.flash('success', "Succesfully logged in");
+                //res.redirect("/register");
                 res.redirect("/person/"+ui+"/");
               }
           }
@@ -107,7 +124,11 @@ app.post("/login", function(req, res){
 
      }
     	else
-    		res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
+    		//res.send("<h1>ERROR!<br> INCORRECT USERNAME OR PASSWORD</h1><a href='/login'>Go Back To Login Page</a>");
+      {
+         req.flash('error', 'Incorrect Username or password!');
+                res.redirect("/login");
+      }
     }
   }
 );	
@@ -135,11 +156,13 @@ app.post("/register", function(req, res){
   connection.query('INSERT INTO users SET ?',users, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred",
-      "error": error
-    })
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred",
+    //   "error": error
+    // })
+    req.flash('error', error.sqlMessage);
+    res.redirect("/register");
   }else{
     //console.log('The solution is: ', req.body.page);
       //console.log('The solution is: ', req.body.user);
@@ -160,10 +183,12 @@ app.post("/register/page", function(req, res){
   connection.query('INSERT INTO page SET ?',pages, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    });
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred"
+    // });
+     req.flash('error', error.sqlMessage);
+    res.redirect("/register/page");
   }else{
   
     res.redirect("/page/"+req.body.userid);
@@ -181,10 +206,12 @@ app.post("/register/person", function(req, res){
   connection.query('INSERT INTO person SET ?',person, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    });
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred"
+    // });
+     req.flash('error', error.sqlMessage);
+    res.redirect("/register/person");
   }else{
         res.redirect("/login");
   }
@@ -237,16 +264,21 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
         throw err;
       else
       {
-        for(var i=0;i<result.length; i++)
+        //console.log("hii");
+        //console.log(result[0]);
+        //console.log(req.params.logged_id);
+        for(i=0;i<result.length; i++)
         {
-          if(result[i].follower_user_id===req.params.logged_id)
+          if(result[i].follower_user_id == req.params.logged_id)
           {
+           // console.log("in");
             truth_value=true;
             break;
           }
         }
       }
-  });
+  
+//console.log(truth_value);
   connection.query(
   'SELECT * FROM users WHERE user_id = ?',
   [req.params.id],
@@ -290,9 +322,10 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
       });
      //console.log("sent user:")
     //console.log(u);
-  }); 
+  });
 });
 
+});
 app.get("/delete/person/:perID/:id", function(req, res){
  
     connection.query("delete from likes where like_photo_id= ?",[req.params.id], function(err, result){
@@ -433,10 +466,12 @@ app.post("/person/:id/newpersonpost",function(req,res){
    connection.query('INSERT INTO photos SET ?',pic, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    });
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred"
+    // });
+     req.flash('error', error.sqlMessage);
+    res.redirect("/person/"+req.params.id+"/newpersonpost");
   }else{
   	
   	
