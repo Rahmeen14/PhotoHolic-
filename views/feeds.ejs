@@ -49,6 +49,17 @@
             </div>
         </div>
     </nav>
+     <div class="container">
+    <% if (error && error.length >0){ %>
+     <div class="alert alert-danger">
+       <%= error %>
+     </div>
+     <% }else if(success && success.length >0) { %>
+     <div class="alert alert-success" role="alert">
+       <%= success %>
+     </div>
+     <% } %>
+   </div>
     <div class="ui main text container segment">
         <div class="ui top attached ">
                 <div class="ui divided items">

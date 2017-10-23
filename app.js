@@ -557,14 +557,20 @@ app.post("/page/:id/newpagepost",function(req,res){
    
   }
   var hashtags=[];
- 
+    connection.query(
+  'SELECT * FROM users WHERE user_id = ?',
+  [req.params.id],
+  function (err, result) {
+    pic["photo_user_name"]=result[0].user_name;
    connection.query('INSERT INTO photos SET ?',pic, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
+   /* res.send({
       "code":400,
       "failed":"error ocurred"
-    })
+    })*/
+    req.flash('error', error.sqlMessage);
+    res.redirect("/person/"+req.params.id+"/newpagepost");
   }else{
     
     
@@ -581,7 +587,7 @@ app.post("/page/:id/newpagepost",function(req,res){
   function (err, result) {
       console.log("e1");
      var m=result[0];
-       connection.query('select * from page where userid = ?', [req.params.id], function(err, result){
+       connection.query('select * from page where user__id = ?', [req.params.id], function(err, result){
         var pag=result[0];
         var count=0;
          connection.query('select count(*) as cnt from follows where followee_user_id = ?', [req.params.id], function(err, result){
@@ -599,8 +605,8 @@ app.post("/page/:id/newpagepost",function(req,res){
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
               });
-            console.log("yayyyy");
-            console.log(m);
+          //  console.log("yayyyy");
+           // console.log(m);
           res.render("pageprofile",{pag:pag,u:m,p:result,cnt:count});
 
          // res.redirect("/person/"+req.params.id+"/");
@@ -612,6 +618,7 @@ app.post("/page/:id/newpagepost",function(req,res){
   }
 
   });
+ });
 });
 
 
@@ -644,7 +651,9 @@ app.get("/person/:id/follows",function(req,res){
           //var diff = $(not_followed).not(followed);
           if((JSON.stringify(followed)==JSON.stringify(not_followed)))
           {
-            res.send("NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
+            //res.send("NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
+            req.flash('success', "NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
+           res.redirect("/person/"+req.params.id+"/");
           }
           else{
           diff = not_followed.filter(function(x) { return followed.indexOf(x) < 0 })
@@ -677,10 +686,12 @@ app.post("/person/:id/:followee_id", function(req, res){
   connection.query('INSERT INTO follows SET ?',f, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    })
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred"
+    // })
+     req.flash('error', error.sqlMessage);
+    res.redirect("/person/"+req.params.id+"/follows");
   }else{
     console.log('The solution is: ', results);
     //res.send("hey");
@@ -696,7 +707,9 @@ app.get("/person/:id/feeds",function(req,res){
           function (err, result) {
             if (err)  throw err;
             if(result.length == 0)
-              {res.send("NOTHING IN FEEDS! PLEASE FOLLOW SOME USERS TO OBTAIN ONE!");
+              {
+                  req.flash('error', "Nothing to show in feeds . Please follow someone!!");
+             res.redirect("/person/"+req.params.id+"/follows");
           }
             var followed=[];
             for( i=0;i<result.length;++i)
@@ -795,10 +808,12 @@ app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(re
    connection.query('INSERT INTO comments SET ?',comment, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    res.send({
-      "code":400,
-      "failed":"error ocurred"
-    })
+    // res.send({
+    //   "code":400,
+    //   "failed":"error ocurred"
+    // })
+      req.flash('error', error.sqlMessage);
+    res.redirect("/person/"+req.params.id+"/photos/"+req.params.photo_id+"/comment/"+req.params.comment_creator+"/new");
   }else
   {
     //console.log("results are"+results);

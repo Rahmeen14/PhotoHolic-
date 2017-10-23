@@ -29,7 +29,17 @@
             </div>
         </div>
     </nav>
-
+     <div class="container">
+    <% if (error && error.length >0){ %>
+     <div class="alert alert-danger">
+       <%= error %>
+     </div>
+     <% }else if(success && success.length >0) { %>
+     <div class="alert alert-success" role="alert">
+       <%= success %>
+     </div>
+     <% } %>
+   </div>
 <div class="container">
 <header class="jumbotron">
   <h1>People you may know</h1>
