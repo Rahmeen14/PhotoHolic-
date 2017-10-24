@@ -646,19 +646,18 @@ app.get("/person/:id/follows",function(req,res){
             for(i=0;i<result.length;++i)
               not_followed.push(result[i].user_id);
           if (err) console.log("e3");
-    console.log(JSON.stringify(followed)==JSON.stringify(not_followed));   
-          
+   
+                    diff = not_followed.filter(function(x) { return followed.indexOf(x) < 0 });
+                     console.log(diff);   
           //var diff = $(not_followed).not(followed);
-          if((JSON.stringify(followed)==JSON.stringify(not_followed)))
+          if(diff.length == 0)
           {
             //res.send("NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
-            req.flash('success', "NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
+            req.flash('success', "NOBODY IN NETWORK! YOU FOLLOW EVERYBODY IN THE NETWORK! CHEERS!!");
            res.redirect("/person/"+req.params.id+"/");
           }
           else{
-          diff = not_followed.filter(function(x) { return followed.indexOf(x) < 0 })
-          
-          
+                 
           connection.query(
          'SELECT * FROM users WHERE user_id in (?)',
           [diff],
@@ -703,14 +702,15 @@ app.post("/person/:id/:followee_id", function(req, res){
 app.get("/person/:id/feeds",function(req,res){
     var id=req.params.id;
      connection.query('SELECT followee_user_id FROM follows WHERE follower_user_id = ?',
-         [id],
+         [req.params.id],
           function (err, result) {
             if (err)  throw err;
             if(result.length == 0)
               {
-                  req.flash('error', "Nothing to show in feeds . Please follow someone!!");
+             req.flash('error', "Nothing to show in feeds . Please follow someone!!");
              res.redirect("/person/"+req.params.id+"/follows");
           }
+          else{
             var followed=[];
             for( i=0;i<result.length;++i)
               followed.push(result[i].followee_user_id);
@@ -783,7 +783,9 @@ app.get("/person/:id/feeds",function(req,res){
           });
         });
       });
+          }
     });
+
    });
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
   //console.log(req.params.photo_id);
@@ -818,6 +820,7 @@ app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(re
   {
     //console.log("results are"+results);
    // res.send("h");
+
     res.redirect("/person/"+req.params.comment_creator+"/feeds");
   }
   });
