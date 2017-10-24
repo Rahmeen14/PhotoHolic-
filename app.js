@@ -5,6 +5,8 @@ var express     = require("express"),
     flash       = require("connect-flash");
     var session = require('express-session');
     var cookieParser = require('cookie-parser');
+    var moment = require('moment');
+    moment().format();
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 //app.use(flash());
@@ -41,7 +43,7 @@ connection.query("select * from view1", function(err, result){
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("partials/view1", {p: result, id:req.params.id});
+    res.render("view1", {p: result, id:req.params.id});
   }
 });
 
@@ -54,7 +56,7 @@ connection.query("select * from new_view", function(err, result){
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("partials/view3", {result: result});
+    res.render("view3", {result: result});
   }
 });
 
@@ -66,18 +68,43 @@ connection.query("select * from view2 where user_id != ?", [req.params.id], func
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("partials/view2", {f: result, id:req.params.id});
+    res.render("view2", {f: result, id:req.params.id});
   }
 });
 
 });
+app.get("/adminPage", function(req, res){
+  var date= new Date();
+  date=date - 7*24*60*60*1000;
+  var formatted = new Date(date);
+  console.log(formatted, " lol ");
+  //var obj={signedIn:0, };
+  var obj={};
+  connection.query('select count(*) as count from users where created_at >= ?', [formatted], function(err, result){
+  obj["signedUp"]=result[0].count;
+  connection.query('select count(*) as count from photos where posted_at >= ?', [formatted], function(err, result){
+  obj["posted"]=result[0].count;
+  connection.query('select count(*) as count from comments where created_at >= ?', [formatted], function(err, result){
+  obj["commented"]=result[0].count;
+  connection.query('select count(*) as count from follows where followed_at >= ?', [formatted], function(err, result){
+  obj["followed"]=result[0].count;
+  console.log(obj);
 
+   res.render("adminPage", {obj:obj});
+});
+  });
+});
+  });
+ 
+});
 app.get("/login", function(req, res){
    res.render("partials/login");
 });
 app.post("/login", function(req, res){
 	//console.log(req);
- 
+ if(req.body.username == "admin" && req.body.password=="password")
+  res.redirect("/adminPage");
+else{
 	 connection.query(
   'SELECT * FROM users WHERE user_name = ?',
   [req.body.username],
@@ -131,7 +158,7 @@ app.post("/login", function(req, res){
       }
     }
   }
-);	
+);	}
   });	//connection.close();
 app.get("/logout", function(req, res){
    res.redirect("/");
@@ -913,6 +940,37 @@ app.post('/updatePage/:id', function(req, res){
           res.redirect("/page/"+req.params.id);
       });
     });
+});
+app.get("/adminView1", function(req, res){
+  connection.query('select * from photoholic.admin_details_person order by created_at desc', function(err, result){
+    if(err)
+    {
+      req.flash("error", "No Users in the Database, LOL");
+      res.redirect("/adminPage");
+    }
+    res.render("admin_view", {o:result});
+  });
+});
+app.get("/adminView2", function(req, res){
+  connection.query('select * from photoholic.admin_details_page order by created_at desc', function(err, result){
+    if(err)
+    {
+      req.flash("error", "No pages in the Database, LOL!");
+      res.redirect("/adminPage");
+    }
+    res.render("admin_view2", {o:result});
+  });
+});
+app.get("/adminView3", function(req, res){
+  connection.query('select * from photoholic.admin_details_photos order by posted_at desc', function(err, result){
+
+    if(err)
+    {
+      req.flash("error", "No pictures in the Database, LOL!");
+      res.redirect("/adminPage");
+    }
+    res.render("admin_view3", {o:result});
+  });
 });
 
 app.listen(3000, 'localhost',function(){

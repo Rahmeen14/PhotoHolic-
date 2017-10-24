@@ -1,0 +1,25 @@
+<% include partials/header1%>
+<div class="container">
+<table style="width:100%">
+  <tr>
+   <th>Image</th>
+    <th>Image ID</th> 
+    <th>User's Name</th>
+    <th>Date of posting</th>
+    <th>No.of likes</th>
+  
+  </tr>
+ <%for(var i=0, bool=false;i<o.length; i++, bool=!bool){%>
+
+ <tr>
+ 	<td style="height: 100px"><img src="<%=o[i].image_url%>" style="height:100px; width:150px"; "></td>
+ 	<td style="height: 100px"><%=o[i].photo_id%></td>
+ 	<td style="height: 100px"><%=o[i].photo_user_name%></td>
+ 	<td style="height: 100px"><%=o[i].posted_at%></td>
+ 	<td style="height: 100px"><%=o[i].count%></td>
+ 	
+ </tr>
+ <%}%>
+</table>
+</div>
+<% include partials/footer%>

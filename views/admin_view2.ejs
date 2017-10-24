@@ -1,0 +1,27 @@
+<% include partials/header1%>
+<div class="container">
+<table style="width:100%">
+  <tr>
+    <th>User's ID</th>
+    <th>User's Name</th> 
+    <th>Email ID</th>
+    <th>Date of Birth</th>
+    <th>Date of Creation</th>
+    <th>Page's Title</th>
+    <th>Page's Purpose</th>
+  </tr>
+ <%for(var i=0, bool=false;i<o.length; i++, bool=!bool){%>
+
+ <tr>
+ 	<td><%= o[i].user_id%></td>
+ 	<td><%=o[i].user_name%></td>
+ 	<td><%=o[i].email_id%></td>
+ 	<td><%=o[i].DOB%></td>
+ 	<td><%=o[i].created_at%></td>
+ 	<td><%=o[i].page_title%></td>
+ 	<td><%=o[i].purpose%></td>
+ </tr>
+ <%}%>
+</table>
+</div>
+<% include partials/footer%>
