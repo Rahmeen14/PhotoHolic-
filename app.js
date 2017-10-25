@@ -40,7 +40,7 @@ app.get("/", function(req, res){
 app.get("/view1/:id", function(req, res){
 connection.query("select * from view1", function(err, result){
   if(err)
-    res.send("Error, please go back and do something that would work");
+    res.send(err);
   else
   {
     res.render("view1", {p: result, id:req.params.id});
@@ -50,13 +50,13 @@ connection.query("select * from view1", function(err, result){
 });
 
 
-app.get("/view3", function(req, res){
+app.get("/view3/:id", function(req, res){
 connection.query("select * from new_view", function(err, result){
   if(err)
     res.send("Error, please go back and do something that would work");
   else
   {
-    res.render("view3", {result: result});
+    res.render("view3", {result: result, id:req.params.id});
   }
 });
 
@@ -972,8 +972,21 @@ app.get("/adminView3", function(req, res){
     res.render("admin_view3", {o:result});
   });
 });
+app.get("/adminView4", function(req, res){
+connection.query("select * from new_view", function(err, result){
+  if(err)
+  {
+    req.flash("error", "No tags in the Database, LOL!");
+      res.redirect("/adminPage"); 
+  }
+  else
+  {
+    res.render("admin_view4", {result: result});
+  }
+});
+
+});
 
 app.listen(3000, 'localhost',function(){
 	console.log("server on duty, mallady");
 });
-

@@ -13,7 +13,7 @@
  <%for(var i=0, bool=false;i<o.length; i++, bool=!bool){%>
 
  <tr>
- 	<td><%= o[i].user_id%></td>
+ 	<td><%= o[i].user_id%><img style="height: 100px; width: 100px; border-radius: 50%" src="<%=o[i].profile_pic%>"></td>
  	<td><%=o[i].user_name%></td>
  	<td><%=o[i].email_id%></td>
  	<td><%=o[i].DOB%></td>
