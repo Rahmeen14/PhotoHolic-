@@ -43,6 +43,8 @@ connection.query("select * from view1", function(err, result){
     res.send(err);
   else
   {
+
+  	console.log(result);
     res.render("view1", {p: result, id:req.params.id});
   }
 });
@@ -98,7 +100,7 @@ app.get("/adminPage", function(req, res){
  
 });
 app.get("/login", function(req, res){
-   res.render("partials/login");
+   res.render("login");
 });
 app.post("/login", function(req, res){
 	//console.log(req);
@@ -165,7 +167,7 @@ app.get("/logout", function(req, res){
 });
 // show register form
 app.get("/register", function(req, res){
-   res.render("partials/register"); 
+   res.render("register"); 
 });
 //handle sign up logic
 app.post("/register", function(req, res){
@@ -194,9 +196,9 @@ app.post("/register", function(req, res){
     //console.log('The solution is: ', req.body.page);
       //console.log('The solution is: ', req.body.user);
       if(req.body.page!=undefined)
-    		res.render("partials/page",{id:results.insertId,p:[]});
+    		res.render("page",{id:results.insertId,p:[]});
     	else
-    		res.render("partials/person",{id:results.insertId});
+    		res.render("person",{id:results.insertId});
     }
   });
 });
@@ -451,7 +453,7 @@ app.get("/page/:id",function(req,res){
   });	//connection.close();
 	});
 app.get("/person/:id/newpersonpost",function(req,res){
-	res.render("partials/newpersonpost",{id:req.params.id});
+	res.render("newpersonpost",{id:req.params.id});
 	});
 app.post("/person/:id/newpersonpost",function(req,res){
 	var today = new Date();
@@ -549,7 +551,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
  });
 });
 app.get("/page/:id/newpagepost", function(req, res){
-  res.render("partials/newpagepost", {id: req.params.id});
+  res.render("newpagepost", {id: req.params.id});
 });
 
 app.post("/page/:id/newpagepost",function(req,res){
@@ -817,7 +819,7 @@ app.get("/person/:id/feeds",function(req,res){
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
   //console.log(req.params.photo_id);
  // console.log(req);
-    res.render("partials/comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
+    res.render("comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
 });
 app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
       var today = new Date();

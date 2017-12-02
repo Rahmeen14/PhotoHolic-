@@ -1,5 +1,5 @@
 
-<% include header %>
+<% include partials/header %>
 <div class="container">
     <div class="row">
          <div style="width:30% ; margin: 40px auto;">
@@ -7,7 +7,7 @@
           </div>
     <div style="width:30% ; margin: 0 auto;">
     
-    <form action="/person/<%=id%>/newpersonpost" method="POST" class="form-horizontal">
+    <form action="/page/<%=id%>/newpagepost" method="POST" class="form-horizontal">
     <div class="form-group">
          <label for="imageurl"  class="col-sm-3 control-label">Image URL:</label>
            <div class="col-sm-9 ">
@@ -37,4 +37,4 @@
 </div>
 </div>
 </div>
-<% include footer %> 
+<% include partials/footer %> 
