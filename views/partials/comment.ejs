@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PhotoHolic</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">PhotoHolic</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/person/<%=comment_creator%>/">My Profile</a></li>
+                        <li><a href="/person/<%=comment_creator%>/follows">Network</a></li>
+                        <li><a href="/person/<%=comment_creator%>/feeds">Feeds</a></li>
+                         <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container">
+    <div class="row">
+         <div style="width:30% ; margin: 40px auto;">
+          <h3>Comment!</h3>  
+          </div>
+    <div style="width:30% ; margin: 0 auto;">
+    
+    <form action="/person/<%=id%>/photos/<%=photo_id%>/comment/<%=comment_creator%>/new" method="POST" class="form-horizontal">
+
+    <div class="form-group">
+         <label for="caption" class="col-sm-3 control-label">Comment:</label>
+            <div class="col-sm-9 ">
+            <input type="text" placeholder="Enter Comment" name="comment">
+            </div>
+    </div>
+
+     <div class="form-group ">
+           <div class="col-sm-offset-3 col-sm-9">
+        <button class="btn  btn-primary "> Submit</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
