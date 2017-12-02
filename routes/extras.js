@@ -15,21 +15,15 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
         throw err;
       else
       {
-        //console.log("hii");
-        //console.log(result[0]);
-        //console.log(req.params.logged_id);
         for(i=0;i<result.length; i++)
         {
           if(result[i].follower_user_id == req.params.logged_id)
           {
-           // console.log("in");
-            truth_value=true;
+                      truth_value=true;
             break;
           }
         }
       }
-  
-//console.log(truth_value);
   connection.query(
   'SELECT * FROM users WHERE user_id = ?',
   [req.params.id],
@@ -43,7 +37,7 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
         if(result!=undefined)
         count2=result[0].cnt;
     });
-   // console.log(us);
+ 
     var ui=req.params.id;
     if (err) console.log("err");
      connection.query(
@@ -52,8 +46,7 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
           function (err, result) {
           if (err) console.log("err");
           var ress=result;
-          console.log("Is page", isPage);
-          
+                   
           connection.query('select * from person where userid = ?', [ui], function(err, result){
               if(result[0]!=undefined)
              res.render("person_profile",{u:us,p:ress, per:result[0], foll:count, folr:count2, id:req.params.logged_id,truth_value:truth_value});
@@ -65,14 +58,9 @@ app.get("/profile_view/:id/:logged_id", function(req, res){
           
               }
           });
-           // console.log(result);
           
-        
-        //res.render("personprofile",{u:result[0]});
-        //console.log("sent user:")
       });
-     //console.log("sent user:")
-    //console.log(u);
+   
   });
 });
 

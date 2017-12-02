@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
   database : 'photoholic'         //the name of your db
 });
 app.get("/person/:id",function(req,res){
-	//console.log(res);
+	
   var count=0, count2=0;
 	connection.query(
   'SELECT * FROM users WHERE user_id = ?',
@@ -23,7 +23,7 @@ app.get("/person/:id",function(req,res){
         if(result!=undefined)
         count2=result[0].cnt;
     });
-   // console.log(us);
+   
     var ui=req.params.id;
     if (err) console.log("err");
   	 connection.query(
@@ -35,31 +35,10 @@ app.get("/person/:id",function(req,res){
           connection.query('select * from person where userid = ?', [ui], function(err, result){
              res.render("personprofile",{u:us,p:ress, per:result[0], foll:count, folr:count2});
           });
-           // console.log(result);
-         
-        //res.render("personprofile",{u:result[0]});
-        //console.log("sent user:")
-      });
-     //console.log("sent user:")
-  	//console.log(u);
+            });
+     
   });	
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.get("/delete/person/:perID/:id", function(req, res){
  
@@ -81,9 +60,6 @@ app.get("/delete/person/:perID/:id", function(req, res){
   });
   });
 });
-
-
-
 
 
 app.get("/person/:id/newpersonpost",function(req,res){
@@ -129,10 +105,7 @@ app.post("/person/:id/newpersonpost",function(req,res){
    connection.query('INSERT INTO photos SET ?',pic, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    // res.send({
-    //   "code":400,
-    //   "failed":"error ocurred"
-    // });
+ 
      req.flash('error', error.sqlMessage);
     res.redirect("/person/"+req.params.id+"/newpersonpost");
   }else{
@@ -166,17 +139,15 @@ app.post("/person/:id/newpersonpost",function(req,res){
   				function (err, result) {
     			if (err) console.log("e5");
           var pho=result;
-    			//console.log("u cannot reach me");
-    				//console.log(result);
+    		
             var sql = "INSERT INTO hashtags (tag_name,tag_photo_id,created_at) VALUES ?";
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
              connection.query("select * from person where userid = ?", [req.params.id], function(err, result){
     			res.render("personprofile",{u:m,p:pho, per:result[0],foll:count,folr:count2});
-         // res.redirect("/person/"+req.params.id+"/");
-    		//res.render("personprofile",{u:result[0]});
+         
     	});
-    //console.log('The solution is: ', req.body.page);
+    
 });
    }); 		});
   }
@@ -197,7 +168,7 @@ app.get("/person/:id/follows",function(req,res){
             var followed=[];
             for( i=0;i<result.length;++i)
               followed.push(result[i].followee_user_id);
-             //console.log(not_followed);
+             
           if (err)  console.log("e2");
           
           connection.query(
@@ -206,17 +177,16 @@ app.get("/person/:id/follows",function(req,res){
          [id],
           function (err, result) {
             var not_followed=[];
-           // console.log(result);
+           
             for(i=0;i<result.length;++i)
               not_followed.push(result[i].user_id);
           if (err) console.log("e3");
    
                     diff = not_followed.filter(function(x) { return followed.indexOf(x) < 0 });
                      console.log(diff);   
-          //var diff = $(not_followed).not(followed);
+          
           if(diff.length == 0)
           {
-            //res.send("NOBODY IN NETWORK! YOU FOLLOW EVERYBPDY IN THE NETWORK! CHEERS!!");
             req.flash('success', "NOBODY IN NETWORK! YOU FOLLOW EVERYBODY IN THE NETWORK! CHEERS!!");
            res.redirect("/person/"+req.params.id+"/");
           }
@@ -249,15 +219,12 @@ app.post("/person/:id/:followee_id", function(req, res){
   connection.query('INSERT INTO follows SET ?',f, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    // res.send({
-    //   "code":400,
-    //   "failed":"error ocurred"
-    // })
+   
      req.flash('error', error.sqlMessage);
     res.redirect("/person/"+req.params.id+"/follows");
   }else{
     console.log('The solution is: ', results);
-    //res.send("hey");
+    
     res.redirect("/person/"+req.params.id+"/follows");
   }
 });
@@ -335,7 +302,6 @@ app.get("/person/:id/feeds",function(req,res){
                       photoarr[i].likes++;
                     }
                   }
-                 // photoarr[i].comments.push(arr);
                 }
                 
 
@@ -352,9 +318,7 @@ app.get("/person/:id/feeds",function(req,res){
 
    });
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
-  //console.log(req.params.photo_id);
- // console.log(req);
-    res.render("../views/comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
+      res.render("../views/comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
 });
 app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
       var today = new Date();
@@ -374,18 +338,12 @@ app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(re
    connection.query('INSERT INTO comments SET ?',comment, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-    // res.send({
-    //   "code":400,
-    //   "failed":"error ocurred"
-    // })
+   
       req.flash('error', error.sqlMessage);
     res.redirect("/person/"+req.params.id+"/photos/"+req.params.photo_id+"/comment/"+req.params.comment_creator+"/new");
   }else
   {
-    //console.log("results are"+results);
-   // res.send("h");
-
-    res.redirect("/person/"+req.params.comment_creator+"/feeds");
+        res.redirect("/person/"+req.params.comment_creator+"/feeds");
   }
   });
  });
@@ -404,25 +362,12 @@ app.get("/person/:id/photos/:photo_id/like/:like_creator/new",function(req,res){
         res.redirect("/person/"+req.params.like_creator+"/feeds");
   }else
   {
-    //s("results are"+results);
-   // res.send("h");
+ 
     res.redirect("/person/"+req.params.like_creator+"/feeds");
   }
   });
 });
-
-
-
-
-
-
-////YEJHHHHHH
-
-
-
 app.post('/updatePerson/:id', function(req, res){
-  
-  //console.log("THe body REsponse is     ", req.body);
   
   connection.query('update users set ? where user_id = ?', [{
     "user_id":req.params.id,

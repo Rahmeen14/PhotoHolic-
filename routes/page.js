@@ -10,10 +10,10 @@ var connection = mysql.createConnection({
   database : 'photoholic'         //the name of your db
 });
 app.get("/page/:id",function(req,res){
-	//res.render("profile",{id:req.params.id});
+
   console.log(req.params.id);
 	var u={}, r;
-	//const r;
+	
 	var today = new Date();
 	connection.query(
   'SELECT * FROM page WHERE user__id = ?',
@@ -53,13 +53,11 @@ app.get("/page/:id",function(req,res){
          [r],
           function (err, result) {
           if (err) console.log("err");
-           // console.log(result);
-          res.render("pageprofile",{pag:pageu,u:u,p:result, cnt: count});
-        //res.render("personprofile",{u:result[0]});
-        //console.log("sent user:")
+                    res.render("pageprofile",{pag:pageu,u:u,p:result, cnt: count});
+     
       });});} );
   });	
-  });	//connection.close();
+  });	
 	});
 app.get("/page/:id/newpagepost", function(req, res){
   res.render("../views/newpagepost", {id: req.params.id});
@@ -105,10 +103,7 @@ app.post("/page/:id/newpagepost",function(req,res){
    connection.query('INSERT INTO photos SET ?',pic, function (error, results, fields) {
   if (error) {
     console.log("error ocurred",error);
-   /* res.send({
-      "code":400,
-      "failed":"error ocurred"
-    })*/
+   
     req.flash('error', error.sqlMessage);
     res.redirect("/person/"+req.params.id+"/newpagepost");
   }else{
@@ -139,20 +134,15 @@ app.post("/page/:id/newpagepost",function(req,res){
           function (err, result) {
           if (err) console.log("e5");
 
-          //console.log("u cannot reach me");
-            //console.log(result);
             var sql = "INSERT INTO hashtags (tag_name,tag_photo_id,created_at) VALUES ?";
             connection.query(sql, [hashtags], function(err) {
                if (err) throw err;
               });
-          //  console.log("yayyyy");
-           // console.log(m);
+          
           res.render("pageprofile",{pag:pag,u:m,p:result,cnt:count});
 
-         // res.redirect("/person/"+req.params.id+"/");
-        //res.render("personprofile",{u:result[0]});
       }); }); });
-    //console.log('The solution is: ', req.body.page);
+ 
 });
         
   }
