@@ -12,7 +12,8 @@ var express     = require("express"),
         adminRoutes= require('./routes/admin'),
         pageRoutes = require('./routes/page'),
         indexRoutes = require('./routes/index'),
-        personRoutes= require('./routes/person');
+        personRoutes= require('./routes/person'),
+        extraRoutes = require('./routes/extras');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 //app.use(flash());
@@ -47,6 +48,7 @@ app.use(adminRoutes);
 app.use(pageRoutes);
 app.use(indexRoutes);
 app.use(personRoutes);
+app.use(extraRoutes);
 
 app.listen(3000, 'localhost',function(){
 	console.log("server on duty, mallady");
