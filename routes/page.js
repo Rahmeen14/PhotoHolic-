@@ -1,3 +1,5 @@
+
+
 var express = require("express");
 var app = express.Router(),
  mysql    = require('mysql');
@@ -60,7 +62,7 @@ app.get("/page/:id",function(req,res){
   });	//connection.close();
 	});
 app.get("/page/:id/newpagepost", function(req, res){
-  res.render("partials/newpagepost", {id: req.params.id});
+  res.render("../views/newpagepost", {id: req.params.id});
 });
 
 app.post("/page/:id/newpagepost",function(req,res){

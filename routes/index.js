@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
   database : 'photoholic'         //the name of your db
 });
 app.get("/login", function(req, res){
-   res.render("partials/login");
+   res.render("../views/login");
 });
 app.post("/login", function(req, res){
 	//console.log(req);
@@ -76,7 +76,7 @@ app.get("/logout", function(req, res){
 });
 // show register form
 app.get("/register", function(req, res){
-   res.render("partials/register"); 
+   res.render("../views/register"); 
 });
 //handle sign up logic
 app.post("/register", function(req, res){
@@ -105,9 +105,9 @@ app.post("/register", function(req, res){
     //console.log('The solution is: ', req.body.page);
       //console.log('The solution is: ', req.body.user);
       if(req.body.page!=undefined)
-    		res.render("partials/page",{id:results.insertId,p:[]});
+    		res.render("../views/page",{id:results.insertId,p:[]});
     	else
-    		res.render("partials/person",{id:results.insertId});
+    		res.render("../views/person",{id:results.insertId});
     }
   });
 });

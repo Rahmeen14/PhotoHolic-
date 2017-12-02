@@ -87,7 +87,7 @@ app.get("/delete/person/:perID/:id", function(req, res){
 
 
 app.get("/person/:id/newpersonpost",function(req,res){
-	res.render("partials/newpersonpost",{id:req.params.id});
+	res.render("../views/newpersonpost",{id:req.params.id});
 	});
 app.post("/person/:id/newpersonpost",function(req,res){
 	var today = new Date();
@@ -354,7 +354,7 @@ app.get("/person/:id/feeds",function(req,res){
 app.get("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
   //console.log(req.params.photo_id);
  // console.log(req);
-    res.render("partials/comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
+    res.render("../views/comment",{id:req.params.id, photo_id:req.params.photo_id,comment_creator:req.params.comment_creator});
 });
 app.post("/person/:id/photos/:photo_id/comment/:comment_creator/new",function(req,res){
       var today = new Date();
