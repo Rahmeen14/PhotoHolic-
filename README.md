@@ -1,6 +1,8 @@
 # PhotoHolic-
 An Instagram-like, photo-posting site built using NodeJS and MySQL database. 
 
+A video demonstrating the app can be found [here](https://youtu.be/Ecwf-aD_XFM)
+
 ## Installation-Requirements
 ```
 Node
