@@ -1,24 +1,23 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
-    mysql 		= require('mysql'),
-    flash       = require("connect-flash");
-    var session = require('express-session');
-    var cookieParser = require('cookie-parser');
-    var moment = require('moment');
+    mysql 	= require('mysql'),
+    flash       = require("connect-flash"),
+    session     = require('express-session'),
+    cookieParser= require('cookie-parser'),
+    moment      = require('moment');
   
-    moment().format();
-      var viewOnlyRoutes = require('./routes/viewOnly'),
-        adminRoutes= require('./routes/admin'),
-        pageRoutes = require('./routes/page'),
-        indexRoutes = require('./routes/index'),
-        personRoutes= require('./routes/person'),
-        extraRoutes = require('./routes/extras');
+moment().format();
+var     viewOnlyRoutes = require('./routes/viewOnly'),
+        adminRoutes    = require('./routes/admin'),
+        pageRoutes     = require('./routes/page'),
+        indexRoutes    = require('./routes/index'),
+        personRoutes   = require('./routes/person'),
+        extraRoutes    = require('./routes/extras');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 //app.use(flash());
 app.use(express.static(__dirname + "/public"));
-
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',  //your username
@@ -36,11 +35,12 @@ app.use(function(req, res, next){
    next();
 });
 app.get("/", function(req, res){
- var q = 'SELECT COUNT(*) as count FROM users';
- connection.query(q, function (error, results) {
- if (error) throw error;
+  var q = 'SELECT COUNT(*) as count FROM users';
+  connection.query(q, function (error, results) {
+  if (error) 
+	 throw error;
  
- res.render("index",{results:results});
+  res.render("index",{results:results});
  });
 });
 app.use(viewOnlyRoutes);
